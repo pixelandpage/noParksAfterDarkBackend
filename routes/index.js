@@ -29,7 +29,7 @@ router.get('/route', function(req, res, next) {
   // res.render('index', { title: 'Express' });
 });
 
-router.post('/route', function(req, res, next){
-});
+// router.post('/route', function(req, res, next){
+// });
 
 module.exports = router;
