@@ -1,15 +1,25 @@
 var express = require('express');
 var request = require('request');
 var router = express.Router();
-var url = "";
 var hereAppID = process.env.HERE_APP_ID;
 var hereAppCode = process.env.HERE_APP_CODE;
 
+var url = "http://geocoder.cit.api.here.com/6.2/geocode.json";
+var searchArgument = "200%20S%20Mathilda%20Sunnyvale%20CA";
+
+var searchText = "?searchtext="+searchArgument;
+var appId = "&app_id="+hereAppID;
+var appCode = "&app_code="+hereAppCode;
+var gen = "&gen=8";
+
+// var util.format()
+
 /* GET home page. */
 router.get('/route', function(req, res, next) {
-  request.get(url, function(error, response, body) {
+  request.get(url + searchText + appId + appCode + gen, function(error, response, body) {
     console.log("REQ: START");
     console.log(body);
+    res.send(body);
     console.log("REQ: END");
   });
   // res.render('index', { title: 'Express' });
