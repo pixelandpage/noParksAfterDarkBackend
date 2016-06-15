@@ -13,7 +13,11 @@ var appCode = "&app_code="+hereAppCode;
 var gen = "&gen=8";
 
 // var util.format()
-
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 /* GET home page. */
 router.get('/route', function(req, res, next) {
   request.get(url + searchText + appId + appCode + gen, function(error, response, body) {
