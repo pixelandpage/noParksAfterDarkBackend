@@ -11,6 +11,7 @@ var searchText = "?searchtext="+searchArgument;
 var appId = "&app_id="+hereAppID;
 var appCode = "&app_code="+hereAppCode;
 var gen = "&gen=8";
+var bumSticks = 3;
 
 // var util.format()
 router.use(function(req, res, next) {
