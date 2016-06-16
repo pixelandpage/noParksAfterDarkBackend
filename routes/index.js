@@ -16,10 +16,11 @@ var gen = "&gen=8";
 
 /* GET home page. */
 router.get('/route', function(req, res, next) {
-  request.get(url + searchText + appId + appCode + gen, function(error, response, body) {
+  request.get(url + searchText + appId + appCode + gen, function(error, response, body) { //massive cognitive load
     console.log("REQ: START");
-    console.log(body);
-    res.send(body);
+    var bodyObject = JSON.parse(body);
+    console.log(bodyObject.Response.View[0].Result[0].Location);
+    res.send(body); //stringify = opposite of parse
     console.log("REQ: END");
   });
   // res.render('index', { title: 'Express' });
