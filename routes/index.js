@@ -5,13 +5,9 @@ var hereAppID = process.env.HERE_APP_ID;
 var hereAppCode = process.env.HERE_APP_CODE;
 
 var url = "http://geocoder.cit.api.here.com/6.2/geocode.json";
-var searchArgument = "200%20S%20Mathilda%20Sunnyvale%20CA";
-
-var searchText = "?searchtext="+searchArgument;
 var appId = "&app_id="+hereAppID;
 var appCode = "&app_code="+hereAppCode;
 var gen = "&gen=8";
-var bumSticks = 3;
 
 // var util.format()
 router.use(function(req, res, next) {
@@ -25,6 +21,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/location/api', function(req, res, next) {
+  var searchArgument = req;
+  var searchText = "?searchtext="+searchArgument;
   request.get(url + searchText + appId + appCode + gen, function(error, response, body) {
     console.log("REQ: START");
     console.log(body);
