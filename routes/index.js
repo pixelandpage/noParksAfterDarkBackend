@@ -20,7 +20,11 @@ router.use(function(req, res, next) {
   next();
 });
 /* GET home page. */
-router.get('/route', function(req, res, next) {
+router.get('/', function(req, res, next) {
+  res.render('index');
+});
+
+router.post('/location/api', function(req, res, next) {
   request.get(url + searchText + appId + appCode + gen, function(error, response, body) {
     console.log("REQ: START");
     console.log(body);
