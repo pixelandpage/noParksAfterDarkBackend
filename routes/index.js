@@ -21,9 +21,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/location/api', function(req, res, next) {
-  var searchArgument = req;
-  var searchText = "?searchtext="+searchArgument;
-  request.get(url + searchText + appId + appCode + gen, function(error, response, body) {
+  // var searchArgument = req;
+  // var searchText = "?searchtext="+searchArgument;
+  request.get(url + req + appId + appCode + gen, function(error, response, body) {
     console.log("REQ: START");
     console.log(body);
     res.send(body);
