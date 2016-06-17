@@ -11,7 +11,7 @@ var locationAppId = "&app_id="+hereAppID;
 var routeAppId = "?app_id="+hereAppID;
 var appCode = "&app_code="+hereAppCode;
 var gen = "&gen=8";
-var start = '&waypoint0=geo!52.5,13.4';
+var start = '&waypoint0=geo!' + '51.51747,-0.08266';
 var end = '&waypoint1=geo!52.5,13.45';
 var mode = '&mode=fastest;car;traffic:disabled';
 
@@ -39,6 +39,7 @@ router.get('/route/api', function(req, res, next) {
     // var bodyObject = JSON.parse(body);
     // console.log(bodyObject.Response.View[0].Result[0].Location);
     console.log(body);
+    console.log(req.params);
     res.send(body); //stringify = opposite of parse
     console.log("REQ: END");
   });
