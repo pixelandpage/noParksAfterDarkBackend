@@ -10,8 +10,9 @@ var locationAppId = "&app_id="+hereAppID;
 var routeAppId = "?app_id="+hereAppID;
 var appCode = "&app_code="+hereAppCode;
 var gen = "&gen=8";
-var start = '&waypoint0=geo!' + '51.51747,-0.08266';
-var mode = '&mode=fastest;pedestrian;';
+var start = '&waypoint0=geo!';
+var end = '&waypoint1=geo!';
+var mode = '&mode=fastest;pedestrian;tunnel:-3'; // add avoid parameters here. -1 is casual avoid, -3 is avoid at all costs
 
 router.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -52,6 +53,5 @@ router.get('/route/api', function(req, res, next) {
     });
   });
 });
-
 
 module.exports = router;
