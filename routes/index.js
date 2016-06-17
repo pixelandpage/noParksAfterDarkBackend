@@ -12,11 +12,8 @@ var routeAppId = "?app_id="+hereAppID;
 var appCode = "&app_code="+hereAppCode;
 var gen = "&gen=8";
 var start = '&waypoint0=geo!' + '51.51747,-0.08266';
-var end = '&waypoint1=geo!52.5,13.45';
-// var end = '&waypoint1=geo!52.5,13.45';
-// var start = '&waypoint0=geo!';
-// var end = '&waypoint1=geo!';
-var mode = '&mode=fastest;car;traffic:disabled';
+var end = '&waypoint1=geo!';
+var mode = '&mode=fastest;pedestrian;tunnel:-3'; // add avoid parameters here. -1 is casual avoid, -3 is avoid at all costs
 
 // var util.format()
 router.use(function(req, res, next) {
@@ -27,38 +24,32 @@ router.use(function(req, res, next) {
 
 
   router.get('/location/api', function(req, res, next) {
-    request.get(locationUrl + searchText + req.query.searchtext + locationAppId + appCode + gen, function(error, response, body) { //massive cognitive load
+    request.get(locationUrl + searchText + req.query.searchtext + locationAppId + appCode + gen, function(error, response, body) {
       console.log("REQ: START");
       var bodyObject = JSON.parse(body);
-      var lat = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude;
-      var long = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude;
-      var address = bodyObject.Response.View[0].Result[0].Location.Address.Label;
-      console.log(address);
-      console.log(lat);
-      console.log(long);
-        function getWaypointData(){
-          var waypointData = lat.toString() + ',' + long.toString();
-          return waypointData;
-        }
-        var end = '&waypoint1=geo!'+ getWaypointData();
-      console.log(getWaypointData());
-      res.send(bodyObject); //stringify = opposite of parse
+      res.send(bodyObject);
       console.log("REQ: END");
     });
   });
 
 router.get('/route/api', function(req, res, next) {
-  request.get(routeUrl + routeAppId + appCode + start + end + mode, function(error, response, body) { //massive cognitive load
+  request.get(locationUrl + searchText + req.query.searchtext + locationAppId + appCode + gen, function(error, response, body) {
     console.log("REQ: START");
-    console.log(body);
-    console.log(req.params);
-    res.send(body); //stringify = opposite of parse
+    var bodyObject = JSON.parse(body);
+    var lat = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude;
+    var long = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude;
+      function getWaypointData(){
+        var waypointData = lat.toString() + ',' + long.toString();
+        return waypointData;
+      }
+      var end = '&waypoint1=geo!'+ getWaypointData();
+    console.log("REQ: END");
+  request.get(routeUrl + routeAppId + appCode + start + end + mode, function(error, response, body) {
+    console.log("REQ: START");
+    res.send(body);
     console.log("REQ: END");
   });
+  });
 });
-
-
-// router.post('/route', function(req, res, next){
-// });
 
 module.exports = router;
