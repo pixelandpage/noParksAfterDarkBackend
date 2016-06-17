@@ -48,7 +48,6 @@ router.get('/route/api', function(req, res, next) {
   request.get(routeUrl + routeAppId + appCode + start + end + mode, function(error, response, body) { //massive cognitive load
     console.log("REQ: START");
     console.log(body);
-    console.log(getWaypointData());
     console.log(req.params);
     res.send(body); //stringify = opposite of parse
     console.log("REQ: END");
