@@ -11,7 +11,6 @@ var routeAppId = "?app_id="+hereAppID;
 var appCode = "&app_code="+hereAppCode;
 var gen = "&gen=8";
 var start = '&waypoint0=geo!' + '51.51747,-0.08266';
-var end = '&waypoint1=geo!';
 var mode = '&mode=fastest;pedestrian;';
 
 router.use(function(req, res, next) {
@@ -23,31 +22,35 @@ router.use(function(req, res, next) {
 
   router.get('/location/api', function(req, res, next) {
     request.get(locationUrl + searchText + req.query.searchtext + locationAppId + appCode + gen, function(error, response, body) {
-      console.log("REQ: START");
       var bodyObject = JSON.parse(body);
       res.send(bodyObject);
-      console.log("REQ: END");
     });
   });
 
 router.get('/route/api', function(req, res, next) {
-  request.get(locationUrl + searchText + req.query.searchtext + locationAppId + appCode + gen, function(error, response, body) {
-    console.log("REQ: START");
-    var bodyObject = JSON.parse(body);
-    var lat = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude;
-    var long = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude;
-      function getWaypointData(){
-        var waypointData = lat.toString() + ',' + long.toString();
-        return waypointData;
-      }
-      var end = '&waypoint1=geo!'+ getWaypointData();
-    console.log("REQ: END");
-  request.get(routeUrl + routeAppId + appCode + start + end + mode, function(error, response, body) {
-    console.log("REQ: START");
-    res.send(body);
-    console.log("REQ: END");
+    request.get(locationUrl + searchText + req.query.starttext + locationAppId + appCode + gen, function(error, response, body) {
+      var bodyObject = JSON.parse(body);
+      var lat = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude;
+      var long = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude;
+        function getWaypointData(){
+          var waypointData = lat.toString() + ',' + long.toString();
+          return waypointData;
+        }
+        var start = '&waypoint0=geo!'+ getWaypointData();
+    request.get(locationUrl + searchText + req.query.endtext + locationAppId + appCode + gen, function(error, response, body) {
+      var bodyObject = JSON.parse(body);
+      var lat = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude;
+      var long = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude;
+        function getWaypointData(){
+          var waypointData = lat.toString() + ',' + long.toString();
+          return waypointData;
+        }
+        var end = '&waypoint1=geo!'+ getWaypointData();
+    request.get(routeUrl + routeAppId + appCode + start + end + mode, function(error, response, body) {
+        res.send(body);
+      });
+    });
   });
-});
 });
 
 
