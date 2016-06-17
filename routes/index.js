@@ -12,7 +12,7 @@ var routeAppId = "?app_id="+hereAppID;
 var appCode = "&app_code="+hereAppCode;
 var gen = "&gen=8";
 var start = '&waypoint0=geo!' + '51.51747,-0.08266';
-var end = '&waypoint1=geo!52.5,13.45';
+var end = '&waypoint1=geo!'+ '52.5,13.45';
 // var end = '&waypoint1=geo!52.5,13.45';
 // var start = '&waypoint0=geo!';
 // var end = '&waypoint1=geo!';
@@ -33,9 +33,6 @@ router.use(function(req, res, next) {
       var lat = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude;
       var long = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude;
       var address = bodyObject.Response.View[0].Result[0].Location.Address.Label;
-      console.log(address);
-      console.log(lat);
-      console.log(long);
         function getWaypointData(){
           var waypointData = lat.toString() + ',' + long.toString();
           return waypointData;
@@ -51,6 +48,7 @@ router.get('/route/api', function(req, res, next) {
   request.get(routeUrl + routeAppId + appCode + start + end + mode, function(error, response, body) { //massive cognitive load
     console.log("REQ: START");
     console.log(body);
+    console.log(getWaypointData());
     console.log(req.params);
     res.send(body); //stringify = opposite of parse
     console.log("REQ: END");
