@@ -1,28 +1,29 @@
 var express = require('express');
-var request = require('supertest')('https://no-parks-after-dark-backend.herokuapp.com');
+var request = require('supertest'); // ('https://no-parks-after-dark-backend.herokuapp.com');
 var expect = require('Chai').expect;
 var server = require('../lib/server.js');
 var chai = require('chai');
+var http = require('http');
 var app = express();
 
-describe('server response', function () {
-//   before(function () {
-//   server.listen(3000);
-// });
-//
-// after(function () {
-//   server.close();
-// });
+describe('server', function() {
+  before(function() {
+  server.listen(3000);
+});
+after(function() {
+  server.close();
+});
 
 
-  it('heroku app is online with status 200', function(done) {
-    request.get('').expect(200, function(err, res){
+
+  it('app is online with status 200', function(done) {
+    http.get('').expect(200, function(err, res){
       done(err);
     });
   });
 
   it('location/api route is accessible with status 200', function(done) {
-      request.get('/location/api').expect(200, function(err, res){
+      request.get('https://localhost:3000/location/api').expect(200, function(err, res){
         done(err);
       });
   });
@@ -54,7 +55,7 @@ describe('server response', function () {
   });
 
   it('route/api should return error if incorrect params',function(done){
-    request.get('/route/api/?starttext=london&endtext=paris')
+    request.get('/route/api/?london,paris')
       .expect('Content-Type', /json/)
       .end(function(err, res){
         expect(res.status).to.equal(503);
@@ -62,11 +63,11 @@ describe('server response', function () {
       });
   });
 
-  it('location/api route returns JSON',function(done){
-    request.get('/location/api/?searchtext=london1988')
-      .expect('Content-Type', /json/)
+  it('location/api should return error if incorrect params',function(done){
+    request.get('/locations/api')
       .end(function(err, res){
-        expect(res.status).to.equal(503);
+        console.log(res);
+        expect(res.status).to.equal(404);
         done(err);
       });
   });
