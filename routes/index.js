@@ -16,17 +16,20 @@ var mode = '&mode=fastest;pedestrian;tunnel:-3'; // add avoid parameters here. -
 
 router.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type: application/json, Accept");
   next();
 });
 
+router.get('/', function(req, res, next) {
+  res.render('index');
+});
 
-  router.get('/location/api', function(req, res, next) {
-    request.get(locationUrl + searchText + req.query.searchtext + locationAppId + appCode + gen, function(error, response, body) {
-      var bodyObject = JSON.parse(body);
-      res.send(bodyObject);
-    });
+router.get('/location/api', function(req, res, next) {
+  request.get(locationUrl + searchText + req.query.searchtext + locationAppId + appCode + gen, function(error, response, body) {
+    var bodyObject = JSON.parse(body);
+    res.send(bodyObject);
   });
+});
 
 router.get('/route/api', function(req, res, next) {
     request.get(locationUrl + searchText + req.query.starttext + locationAppId + appCode + gen, function(error, response, body) {
@@ -48,7 +51,8 @@ router.get('/route/api', function(req, res, next) {
         }
         var end = '&waypoint1=geo!'+ getWaypointData();
     request.get(routeUrl + routeAppId + appCode + start + end + mode, function(error, response, body) {
-        res.send(body);
+      res.setHeader('Content-Type','application/json');
+      res.send(JSON.stringify(body));
       });
     });
   });
