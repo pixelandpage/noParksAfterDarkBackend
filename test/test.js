@@ -53,6 +53,24 @@ describe('server response', function () {
       });
   });
 
+  it('route/api should return error if incorrect params',function(done){
+    request.get('/route/api/?starttext=london&endtext=paris')
+      .expect('Content-Type', /json/)
+      .end(function(err, res){
+        expect(res.status).to.equal(503);
+        done(err);
+      });
+  });
+
+  it('location/api route returns JSON',function(done){
+    request.get('/location/api/?searchtext=london1988')
+      .expect('Content-Type', /json/)
+      .end(function(err, res){
+        expect(res.status).to.equal(503);
+        done(err);
+      });
+  });
+
   it('should return the correct long and lat for commercial street when using location/api',function(done){
     request.get('/location/api/?searchtext=50%20commercial%20street%20london')
     .expect('Content-Type', /json/)
