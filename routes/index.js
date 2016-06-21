@@ -52,7 +52,7 @@ router.get('/route/api', function(req, res, next) {
         var end = '&waypoint1=geo!'+ getWaypointData();
     request.get(routeUrl + routeAppId + appCode + start + end + mode, function(error, response, body) {
       res.setHeader('Content-Type','application/json');
-      res.send(JSON.stringify(body));
+      res.send(JSON.parse(body));
       });
     });
   });
