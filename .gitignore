@@ -1,4 +1,4 @@
 /.env
 /npm-debug.log
-/node_modules
+/Makefile
 node_modules/

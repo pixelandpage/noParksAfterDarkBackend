@@ -12,11 +12,13 @@ var appCode = "&app_code="+hereAppCode;
 var gen = "&gen=8";
 var start = '&waypoint0=geo!';
 var end = '&waypoint1=geo!';
-var mode = '&mode=fastest;pedestrian;tunnel:-3'; // add avoid parameters here. -1 is casual avoid, -3 is avoid at all costs
+var mode = '&mode=fastest;';// pedestrian;tunnel:-3'; // add avoid parameters here. -1 is casual avoid, -3 is avoid at all costs
+var route = '&routeattributes=sh';
+var departure = '&departure=now';
 
 router.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type: application/json, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
@@ -50,8 +52,7 @@ router.get('/route/api', function(req, res, next) {
           return waypointData;
         }
         var end = '&waypoint1=geo!'+ getWaypointData();
-    request.get(routeUrl + routeAppId + appCode + start + end + mode, function(error, response, body) {
-      res.setHeader('Content-Type','application/json');
+    request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + req.query.nightmode + departure, function(error, response, body) {
       res.send(JSON.parse(body));
       });
     });
