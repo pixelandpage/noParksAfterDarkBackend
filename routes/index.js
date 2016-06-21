@@ -1,5 +1,7 @@
 var express = require('express');
 var request = require('request');
+var SunCalc = require('suncalc');
+require('date-utils');
 var router = express.Router();
 var hereAppID = process.env.HERE_APP_ID;
 var hereAppCode = process.env.HERE_APP_CODE;
@@ -38,6 +40,7 @@ router.get('/route/api', function(req, res, next) {
       var bodyObject = JSON.parse(body);
       var lat = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude;
       var long = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude;
+      var times = SunCalc.getTimes(new Date(), lat, long);
         function getWaypointData(){
           var waypointData = lat.toString() + ',' + long.toString();
           return waypointData;
@@ -52,11 +55,37 @@ router.get('/route/api', function(req, res, next) {
           return waypointData;
         }
         var end = '&waypoint1=geo!'+ getWaypointData();
-    request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + req.query.nightmode + departure, function(error, response, body) {
-      res.send(JSON.parse(body));
-      });
+        console.log(times.sunset);
+        var currentTime = new Date();
+        if (currentTime > times.sunset && currentTime < times.sunrise){
+          request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + req.query.nightmode + departure, function(error, response, body) {
+            res.send(JSON.parse(body));
+          });
+          console.log('IT\'S NOT SAFE!!!');
+        } else {
+          request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + departure, function(error, response, body) {
+            res.send(JSON.parse(body));
+          });
+          console.log('IT\'S SAFE!!!');
+        }
     });
   });
 });
 
 module.exports = router;
+
+
+
+// get today's sunlight times for London
+// var times = SunCalc.getTimes(new Date(), 51.5074, -0.1278);
+
+// // format sunrise time from the Date object
+// var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
+//
+// // get position of the sun (azimuth and altitude) at today's sunrise
+// var sunrisePos = SunCalc.getPosition(times.sunrise, 51.5, -0.1);
+//
+// // get sunrise azimuth in degrees
+// var sunriseAzimuth = sunrisePos.azimuth * 180 / Math.PI;
+
+// console.log(times.sunrise);
