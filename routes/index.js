@@ -1,5 +1,7 @@
 var express = require('express');
 var request = require('request');
+// var SunCalc = require('suncalc');
+// require('date-utils');
 var router = express.Router();
 var hereAppID = process.env.HERE_APP_ID;
 var hereAppCode = process.env.HERE_APP_CODE;
@@ -38,6 +40,7 @@ router.get('/route/api', function(req, res, next) {
       var bodyObject = JSON.parse(body);
       var lat = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude;
       var long = bodyObject.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude;
+      // var times = SunCalc.getTimes(new Date(), lat, long);
         function getWaypointData(){
           var waypointData = lat.toString() + ',' + long.toString();
           return waypointData;
@@ -52,9 +55,18 @@ router.get('/route/api', function(req, res, next) {
           return waypointData;
         }
         var end = '&waypoint1=geo!'+ getWaypointData();
-    request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + req.query.nightmode + departure, function(error, response, body) {
-      res.send(JSON.parse(body));
-      });
+        // var currentTime = new Date();
+        //   if (currentTime > times.sunset && currentTime < times.sunrise){
+            request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + req.query.nightmode + departure, function(error, response, body) {
+              res.send(JSON.parse(body));
+            });
+        //     console.log("IT'S NOT SAFE!!!");
+        //   } else {
+        //     request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + departure, function(error, response, body) {
+        //       res.send(JSON.parse(body));
+        //     });
+        //     console.log("IT'S SAFE!!!");
+        //   }
     });
   });
 });
