@@ -77,17 +77,15 @@ describe('Backend Api', function() {
     });
   });
 
-  it('route/api should avoid parks and tunnels when using public transport', function(done) {
+  it('route/api should avoid parks and tunnels when using public transport and it being nighttime', function(done) {
     chai.request('http://localhost:3000')
       .get('/route/api/?endtext=e1%206lt&starttext=ha5%202ez&type=publicTransportTimeTable&nightmode=park:-1,tunnel:-1')
-      .end(function (err, res) {
-        expect(err).to.be.null;
-        assert.equal(200, res.statusCode);
-        expect(res).to.be.json;
-        expect(res.body.response.route[0].mode.transportModes).to.include('publicTransportTimeTable');
-        expect(res.body.response.route[0].mode.feature[0].value).to.equal('park');
-        expect(res.body.response.route[0].mode.feature[1].value).to.equal('tunnel');
-        done();
-      });
+    .end(function (err, res) {
+      expect(err).to.be.null;
+      expect(res.body.response.route[0].mode.transportModes).to.include('publicTransportTimeTable');
+      expect(res.body.response.route[0].mode.feature[0].value).to.equal('park');
+      expect(res.body.response.route[0].mode.feature[1].value).to.equal('tunnel');
+      done();
+    });
   });
 });

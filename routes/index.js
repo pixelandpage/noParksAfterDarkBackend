@@ -55,37 +55,20 @@ router.get('/route/api', function(req, res, next) {
           return waypointData;
         }
         var end = '&waypoint1=geo!'+ getWaypointData();
-        console.log(times.sunset);
         var currentTime = new Date();
-        if (currentTime > times.sunset && currentTime < times.sunrise){
-          request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + req.query.nightmode + departure, function(error, response, body) {
-            res.send(JSON.parse(body));
-          });
-          console.log('IT\'S NOT SAFE!!!');
-        } else {
-          request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + departure, function(error, response, body) {
-            res.send(JSON.parse(body));
-          });
-          console.log('IT\'S SAFE!!!');
-        }
+          if (currentTime > times.sunset && currentTime < times.sunrise){
+            request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + req.query.nightmode + departure, function(error, response, body) {
+              res.send(JSON.parse(body));
+            });
+            console.log('IT\'S NOT SAFE!!!');
+          } else {
+            request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + departure, function(error, response, body) {
+              res.send(JSON.parse(body));
+            });
+            console.log('IT\'S SAFE!!!');
+          }
     });
   });
 });
 
 module.exports = router;
-
-
-
-// get today's sunlight times for London
-// var times = SunCalc.getTimes(new Date(), 51.5074, -0.1278);
-
-// // format sunrise time from the Date object
-// var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
-//
-// // get position of the sun (azimuth and altitude) at today's sunrise
-// var sunrisePos = SunCalc.getPosition(times.sunrise, 51.5, -0.1);
-//
-// // get sunrise azimuth in degrees
-// var sunriseAzimuth = sunrisePos.azimuth * 180 / Math.PI;
-
-// console.log(times.sunrise);
