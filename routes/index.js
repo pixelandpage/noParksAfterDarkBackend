@@ -60,12 +60,12 @@ router.get('/route/api', function(req, res, next) {
             request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + req.query.nightmode + departure, function(error, response, body) {
               res.send(JSON.parse(body));
             });
-            console.log('IT\'S NOT SAFE!!!');
+            console.log("IT'S NOT SAFE!!!");
           } else {
             request.get(routeUrl + routeAppId + appCode + start + end + route + mode + req.query.type + ';' + departure, function(error, response, body) {
               res.send(JSON.parse(body));
             });
-            console.log('IT\'S SAFE!!!');
+            console.log("IT'S SAFE!!!");
           }
     });
   });
